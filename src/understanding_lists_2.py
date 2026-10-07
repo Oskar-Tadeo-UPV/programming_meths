@@ -48,3 +48,8 @@ motorcycles_5 = ['honda', 'mortalica', 'yamaha', 'suzuki', 'hd', 'kawasaki']
 motorcycles_5.remove('yamaha') #borrara yamaha "elemento seleccionado por argumento" 
 print(motorcycles_5)
 print("-------------------------------------------------------------------------------------------")
+
+#Metodo sort
+"""
+Ordenar la lista de manera permanente (Argumento opcional de sort[reverse=True])
+"""
