@@ -1,431 +1,382 @@
-# ---------------------------------------------------------------
-# PORTADA
-# ---------------------------------------------------------------
-# Student: Oskar Alvarez Najera
+# ============================================================
+# Student: Oskar Tadeo Alvarez Najera
 # Student ID: 2630002
-# Group: t_strings
-# Course: Algorithms and Programming
-# Topic: Strings in Python
-#
-# ---------------------------------------------------------------
-# RESUMEN EJECUTIVO
-# ---------------------------------------------------------------
-# A string in Python is an immutable sequence of Unicode characters,
-# meaning that once it is created it cannot be modified in place; any
-# operation that changes it returns a NEW string. Common operations
-# include concatenation (+), repetition (*), computing its length
-# with len(), extracting sub-strings via slicing (text[a:b]), searching
-# with find() / in, and replacing text with replace().
-# Validating and normalizing user input (emails, names, passwords) is
-# essential to avoid errors and to compare data consistently: using
-# strip() and lower() before comparing is a good practice. This
-# document contains six problems that practice creation, indexing,
-# slicing, concatenation, search, replacement, split, join, formatting,
-# and validation of strings, each one with description, inputs,
-# outputs, validations and three test cases (normal, border, error).
-#
-# ---------------------------------------------------------------
-# GOOD PRACTICES APPLIED
-# ---------------------------------------------------------------
-# - Strings are immutable: every transformation creates a new string.
-# - Normalize input with strip() and lower() before comparing.
-# - Avoid magic numbers in indices; document what each slice extracts.
-# - Prefer string methods over rewriting basic logic.
-# - Design validations in order: non-empty first, then format.
-# - Write readable code: clear variable names and clear error messages.
-#
-# =============================================================================
+# Group: IM 1-1
+# Subject: Python Strings
+# ============================================================
+
+# EXECUTIVE SUMMARY
+#   A string is a Python data type used to store text, such as names,
+#   sentences, email addresses, passwords, and product labels.
+#   Strings are immutable, which means that their characters cannot be
+#   changed directly; string operations create new strings instead.
+#   Common operations include joining text, measuring its length,
+#   extracting slices, searching for text, and replacing characters.
+#   Input validation helps prevent empty, incorrectly formatted, or
+#   unexpected data from being processed as if it were valid.
+#   Normalization, such as removing extra spaces and using lowercase,
+#   makes text comparisons more consistent and reliable.
+#   This file contains six problems with descriptions, inputs, outputs,
+#   validations, example test cases, and Python code for each solution.
+
+# PRINCIPLES AND GOOD PRACTICES
+#   - Strings are immutable: operations create a new string.
+#   - Use strip() and lower() to normalize text before comparisons.
+#   - Explain slice indexes instead of using unexplained numbers.
+#   - Prefer built-in string methods over unnecessarily complex logic.
+#   - Validate in a clear order: check for empty input, then its format.
+#   - Use readable variable names and understandable error messages.
+#   - The examples use introductory concepts such as input(), print(),
+#     if/elif/else, for loops, lists, indexing, slicing, and f-strings.
+#   - Some string methods are included because they are required by this
+#     assignment: strip(), split(), replace(), count(), find(), and others.
 
 
-# =============================================================================
-# Problem 1: Full name formatter (name + initials)
-# -----------------------------------------------------------------------------
-# Description: Reads a full name in a single string, normalizes spaces and
-#   capitalization, prints it in Title Case and shows the initials with dots.
+# ============================================================
+# PROBLEM 1: FULL NAME FORMATTER
+# Description:
+# Normalize a full name, display it in title case, and create initials.
+# Extra spaces around the name are removed and repeated spaces are
+# handled by split() followed by join().
 #
 # Inputs:
-# - full_name (str): may come in any case, with extra spaces.
+# - full_name: a person's full name.
 #
 # Outputs:
-# - "Formatted name: <Name In Title Case>"
-# - "Initials: <X.X.X.>"
+# - Formatted name and initials.
 #
 # Validations:
-# - full_name must not be empty after strip().
-# - Must contain at least two words.
+# - The name cannot be empty after removing surrounding spaces.
+# - At least two words are required.
 #
 # Test cases:
-# 1) Normal: "juan carlos tovar"  -> Formatted: "Juan Carlos Tovar" | Initials: J.C.T.
-# 2) Border: "  ana   maria  lopez " -> "Ana Maria Lopez" | A.M.L.
-# 3) Error : "   " -> "Error: invalid input"
-# =============================================================================
+# 1) Normal: "  juan   carlos tovar " -> "Juan Carlos Tovar", "J.C.T."
+# 2) Border: "ana lopez" -> "Ana Lopez", "A.L."
+# 3) Error: "     " -> "Error: name cannot be empty"
+# ============================================================
 
-def problem_1_full_name_formatter():
-    print("\n--- Problem 1: Full name formatter ---")
-    full_name = input("Enter full name: ").strip()
+print("\n=== Problem 1: Full Name Formatter ===")
+full_name = input("Enter your full name: ")
+full_name = full_name.strip()
 
-    # Validation 1: non-empty after strip
-    if full_name == "":
-        print("Error: invalid input")
-        return
-
-    # Normalize extra spaces by splitting and joining
-    words = full_name.split()
-
-    # Validation 2: at least two words
-    if len(words) < 2:
-        print("Error: invalid input")
-        return
-
-    # Title case formatted name
-    formatted_name = " ".join(word.capitalize() for word in words)
-
-    # Build initials with dots: X.X.X.
-    initials = ""
-    for word in words:
-        initials += word[0].upper() + "."
-
-    print(f"Formatted name: {formatted_name}")
-    print(f"Initials: {initials}")
-
-
-# =============================================================================
-# Problem 2: Simple email validator (structure + domain)
-# -----------------------------------------------------------------------------
-# Description: Validates a basic email format: exactly one '@', at least one
-#   '.' after the '@', and no whitespace. Shows the domain if valid.
-#
-# Inputs:
-# - email_text (str)
-#
-# Outputs:
-# - "Valid email: true" / "Valid email: false"
-# - "Domain: <domain_part>" when valid.
-#
-# Validations:
-# - email_text not empty after strip().
-# - Exactly one '@'.
-# - No spaces.
-# - At least one '.' after the '@'.
-#
-# Test cases:
-# 1) Normal: "user@example.com"  -> Valid: true  | Domain: example.com
-# 2) Border: "a@b.co"            -> Valid: true  | Domain: b.co
-# 3) Error : "user.example.com"  -> Valid: false
-# =============================================================================
-
-def problem_2_email_validator():
-    print("\n--- Problem 2: Simple email validator ---")
-    email_text = input("Enter email: ").strip()
-
-    # Validation: non-empty
-    if email_text == "":
-        print("Error: invalid input")
-        return
-
-    # Validation: exactly one '@'
-    if email_text.count("@") != 1:
-        print("Valid email: false")
-        return
-
-    # Validation: no whitespace
-    if " " in email_text:
-        print("Valid email: false")
-        return
-
-    at_index = email_text.find("@")
-    local_part = email_text[:at_index]        # text before '@'
-    domain_part = email_text[at_index + 1:]   # text after '@'
-
-    # Validation: local part and domain non-empty, dot in domain
-    if local_part == "" or domain_part == "" or "." not in domain_part:
-        print("Valid email: false")
-        return
-
-    print("Valid email: true")
-    print(f"Domain: {domain_part}")
-
-
-# =============================================================================
-# Problem 3: Palindrome checker (ignoring spaces and case)
-# -----------------------------------------------------------------------------
-# Description: Determines if a phrase is a palindrome, ignoring spaces and
-#   capitalization. It also shows the normalized version.
-#
-# Inputs:
-# - phrase (str)
-#
-# Outputs:
-# - "Normalized: <clean_text>"
-# - "Is palindrome: true" / "Is palindrome: false"
-#
-# Validations:
-# - phrase not empty after strip().
-# - At least 3 characters after removing spaces.
-#
-# Test cases:
-# 1) Normal: "Anita lava la tina" -> Normalized: "anitalavalatina" -> true
-# 2) Border: "aba"                -> true
-# 3) Error : ""                   -> "Error: invalid input"
-# =============================================================================
-
-def problem_3_palindrome_checker():
-    print("\n--- Problem 3: Palindrome checker ---")
-    phrase = input("Enter a phrase: ").strip()
-
-    # Validation: non-empty
-    if phrase == "":
-        print("Error: invalid input")
-        return
-
-    # Normalize: lower case and remove spaces
-    clean_text = phrase.lower().replace(" ", "")
-
-    # Validation: minimum reasonable length
-    if len(clean_text) < 3:
-        print("Error: invalid input")
-        return
-
-    reversed_text = clean_text[::-1]  # reverse using slicing
-
-    print(f"Normalized: {clean_text}")
-    if clean_text == reversed_text:
-        print("Is palindrome: true")
+if full_name == "":
+    print("Error: name cannot be empty")
+else:
+    name_parts = full_name.split()
+    if len(name_parts) < 2:
+        print("Error: enter at least two words")
     else:
-        print("Is palindrome: false")
+        clean_name = " ".join(name_parts).title()
+        initials = ""
+        for name_part in name_parts:
+            initials = initials + name_part[0].upper() + "."
+        print(f"Formatted name: {clean_name}")
+        print(f"Initials: {initials}")
 
 
-# =============================================================================
-# Problem 4: Sentence word stats (lengths and first/last word)
-# -----------------------------------------------------------------------------
-# Description: Splits a sentence into words and reports total count,
-#   first word, last word, shortest word and longest word.
+# ============================================================
+# PROBLEM 2: SIMPLE EMAIL VALIDATOR
+# Description:
+# Check a basic email structure and display its domain when valid.
+# This is a simple classroom check, not a complete email standard
+# validator.
 #
 # Inputs:
-# - sentence (str)
+# - email_text: an email address.
 #
 # Outputs:
-# - "Word count: <n>"
-# - "First word: <...>"
-# - "Last word: <...>"
-# - "Shortest word: <...>"
-# - "Longest word: <...>"
+# - "Valid email: true" or "Valid email: false".
+# - The domain when the email is valid.
 #
 # Validations:
-# - Sentence not empty after strip().
-# - Must have at least one word after split().
+# - The input cannot be empty.
+# - It must contain exactly one '@'.
+# - It cannot contain spaces.
+# - There must be text before '@' and a dot after '@'.
 #
 # Test cases:
-# 1) Normal: "Python is a great language" -> count 5, first "Python",
-#    last "language", shortest "a", longest "language"
-# 2) Border: "Hello"                      -> count 1, first=last="Hello"
-# 3) Error : "    "                       -> "Error: invalid input"
-# =============================================================================
+# 1) Normal: "student@example.com" -> valid, domain "example.com"
+# 2) Border: "a@b.c" -> valid under these simple rules
+# 3) Error: "studentexample.com" -> invalid because '@' is missing
+# ============================================================
 
-def problem_4_sentence_word_stats():
-    print("\n--- Problem 4: Sentence word stats ---")
-    sentence = input("Enter a sentence: ").strip()
+print("\n=== Problem 2: Simple Email Validator ===")
+email_text = input("Enter an email address: ")
+email_text = email_text.strip()
 
-    # Validation: non-empty
-    if sentence == "":
-        print("Error: invalid input")
-        return
+if email_text == "":
+    print("Error: email cannot be empty")
+    print("Valid email: false")
+elif email_text.count("@") != 1:
+    print("Valid email: false")
+elif " " in email_text:
+    print("Valid email: false")
+else:
+    at_position = email_text.find("@")
+    domain_part = email_text[at_position + 1:]
+    name_part = email_text[:at_position]
 
+    if name_part == "" or "." not in domain_part:
+        print("Valid email: false")
+    elif domain_part.startswith(".") or domain_part.endswith("."):
+        print("Valid email: false")
+    else:
+        print("Valid email: true")
+        print(f"Domain: {domain_part}")
+
+
+# ============================================================
+# PROBLEM 3: PALINDROME CHECKER
+# Description:
+# Determine whether a phrase reads the same forward and backward.
+# The comparison ignores spaces and letter case.
+#
+# Inputs:
+# - phrase: a phrase to check.
+#
+# Outputs:
+# - The normalized phrase and whether it is a palindrome.
+#
+# Validations:
+# - The phrase cannot be empty.
+# - At least three non-space characters are required.
+#
+# Test cases:
+# 1) Normal: "Anita lava la tina" -> true
+# 2) Border: "aba" -> true
+# 3) Error: " a " -> error because only one character remains
+# ============================================================
+
+print("\n=== Problem 3: Palindrome Checker ===")
+phrase = input("Enter a phrase: ")
+phrase = phrase.strip()
+
+if phrase == "":
+    print("Error: phrase cannot be empty")
+else:
+    normalized_phrase = phrase.lower().replace(" ", "")
+    if len(normalized_phrase) < 3:
+        print("Error: enter at least three non-space characters")
+    else:
+        reversed_phrase = normalized_phrase[::-1]
+        print(f"Normalized phrase: {normalized_phrase}")
+        if normalized_phrase == reversed_phrase:
+            print("Is palindrome: true")
+        else:
+            print("Is palindrome: false")
+
+
+# ============================================================
+# PROBLEM 4: SENTENCE WORD STATS
+# Description:
+# Count the words in a sentence and show the first, last, shortest,
+# and longest word. If words tie in length, the first matching word
+# is kept.
+#
+# Inputs:
+# - sentence: a sentence.
+#
+# Outputs:
+# - Word count, first word, last word, shortest word, longest word.
+#
+# Validations:
+# - The sentence cannot be empty after strip().
+# - At least one word must remain after split().
+#
+# Test cases:
+# 1) Normal: "Python makes learning fun" -> 4 words; shortest "fun"
+# 2) Border: "hello" -> 1 word; first and last are "hello"
+# 3) Error: "   " -> error because the sentence is empty
+# ============================================================
+
+print("\n=== Problem 4: Sentence Word Stats ===")
+sentence = input("Enter a sentence: ")
+sentence = sentence.strip()
+
+if sentence == "":
+    print("Error: sentence cannot be empty")
+else:
     words = sentence.split()
-
-    # Validation: at least one word
     if len(words) == 0:
-        print("Error: invalid input")
-        return
+        print("Error: enter at least one word")
+    else:
+        shortest_word = words[0]
+        longest_word = words[0]
 
-    first_word = words[0]
-    last_word = words[-1]
+        for word in words:
+            if len(word) < len(shortest_word):
+                shortest_word = word
+            if len(word) > len(longest_word):
+                longest_word = word
 
-    shortest_word = words[0]
-    longest_word = words[0]
-    for word in words:
-        if len(word) < len(shortest_word):
-            shortest_word = word
-        if len(word) > len(longest_word):
-            longest_word = word
-
-    print(f"Word count: {len(words)}")
-    print(f"First word: {first_word}")
-    print(f"Last word: {last_word}")
-    print(f"Shortest word: {shortest_word}")
-    print(f"Longest word: {longest_word}")
+        print(f"Word count: {len(words)}")
+        print(f"First word: {words[0]}")
+        print(f"Last word: {words[len(words) - 1]}")
+        print(f"Shortest word: {shortest_word}")
+        print(f"Longest word: {longest_word}")
 
 
-# =============================================================================
-# Problem 5: Password strength classifier
-# -----------------------------------------------------------------------------
-# Description: Classifies a password as weak, medium or strong according to
-#   length and the presence of upper, lower, digit and symbol characters.
-#
-# Rules:
-# - weak   : length < 8 OR all characters are the same type.
-# - medium : length >= 8 and at least two character types.
-# - strong : length >= 8 and contains upper, lower, digit and symbol.
+# ============================================================
+# PROBLEM 5: PASSWORD STRENGTH CLASSIFIER
+# Description:
+# Classify a password as weak, medium, or strong using simple rules.
+# Strong requires at least 8 characters, uppercase and lowercase
+# letters, a digit, and a symbol. Medium requires at least 8
+# characters and at least two of those character categories.
 #
 # Inputs:
-# - password_input (str)
+# - password_input: the password to classify.
 #
 # Outputs:
-# - "Password strength: weak|medium|strong"
+# - Password strength: weak, medium, or strong.
 #
 # Validations:
-# - Password must not be empty.
+# - The password cannot be empty.
+# - Length is checked before assigning a strength.
 #
 # Test cases:
-# 1) Normal: "Abcdef1!"   -> strong
-# 2) Border: "abcdefgh"   -> weak (only lowercase)
-# 3) Error : ""           -> "Error: invalid input"
-# =============================================================================
+# 1) Normal: "Hello123!" -> strong
+# 2) Border: "hello123" -> medium
+# 3) Error: "" -> error because the password is empty
+# ============================================================
 
-def problem_5_password_strength():
-    print("\n--- Problem 5: Password strength classifier ---")
-    password_input = input("Enter password: ")
+print("\n=== Problem 5: Password Strength Classifier ===")
+password_input = input("Enter a password: ")
 
-    # Validation: non-empty (do not strip passwords here, but reject empty)
-    if password_input.strip() == "":
-        print("Error: invalid input")
-        return
-
+if password_input == "":
+    print("Error: password cannot be empty")
+else:
     has_upper = False
     has_lower = False
     has_digit = False
     has_symbol = False
 
-    for char in password_input:
-        if char.isupper():
+    for character in password_input:
+        if character.isupper():
             has_upper = True
-        elif char.islower():
+        elif character.islower():
             has_lower = True
-        elif char.isdigit():
+        elif character.isdigit():
             has_digit = True
-        elif not char.isalnum():
+        else:
             has_symbol = True
 
-    # Count how many types are present
-    type_count = 0
-    if has_upper: type_count += 1
-    if has_lower: type_count += 1
-    if has_digit: type_count += 1
-    if has_symbol: type_count += 1
+    category_count = 0
+    if has_upper:
+        category_count = category_count + 1
+    if has_lower:
+        category_count = category_count + 1
+    if has_digit:
+        category_count = category_count + 1
+    if has_symbol:
+        category_count = category_count + 1
 
-    length = len(password_input)
-
-    if length < 8 or type_count == 1:
+    if len(password_input) < 8:
         strength = "weak"
     elif has_upper and has_lower and has_digit and has_symbol:
         strength = "strong"
-    else:
+    elif category_count >= 2:
         strength = "medium"
+    else:
+        strength = "weak"
 
     print(f"Password strength: {strength}")
 
 
-# =============================================================================
-# Problem 6: Product label formatter (fixed-width text)
-# -----------------------------------------------------------------------------
-# Description: Builds a fixed-width label of exactly 30 characters using the
-#   product name and price. Short labels are padded with spaces; long labels
-#   are truncated to 30 characters.
+# ============================================================
+# PROBLEM 6: PRODUCT LABEL FORMATTER
+# Description:
+# Create a product label in the format
+# "Product: NAME | Price: $PRICE" and make it exactly 30 characters.
+# Labels longer than 30 characters are cut off; shorter labels are
+# padded with spaces at the end.
 #
 # Inputs:
-# - product_name (str)
-# - price_value  (str or number, must convert to positive float)
+# - product_name: product name.
+# - price_value: a positive numeric price.
 #
 # Outputs:
-# - 'Label: "<exactly 30 characters>"'
+# - The label surrounded by quotes and its length.
 #
 # Validations:
-# - product_name not empty after strip().
-# - price_value must be a positive number.
+# - The product name cannot be empty.
+# - Price must be numeric and greater than zero.
 #
 # Test cases:
-# 1) Normal: "Laptop", "999.99"    -> padded to 30 chars
-# 2) Border: "A"*40, "1"           -> truncated to 30 chars
-# 3) Error : "  ", "abc"           -> "Error: invalid input"
-# =============================================================================
+# 1) Normal: name "Pen", price "2.5" -> a 30-character label
+# 2) Border: name "A", price "1" -> padded to 30 characters
+# 3) Error: name "Pen", price "abc" -> invalid price
+# ============================================================
 
-def problem_6_product_label():
-    print("\n--- Problem 6: Product label formatter ---")
-    product_name = input("Enter product name: ").strip()
-    price_raw = input("Enter price: ").strip()
+print("\n=== Problem 6: Product Label Formatter ===")
+product_name = input("Enter the product name: ").strip()
+price_text = input("Enter the positive price: ").strip()
 
-    # Validation: product name non-empty
-    if product_name == "":
-        print("Error: invalid input")
-        return
+if product_name == "":
+    print("Error: product name cannot be empty")
+else:
+    # Validate a simple positive integer or decimal price.
+    # This loop accepts digits and at most one decimal point.
+    price_format_is_valid = price_text != ""
+    decimal_point_count = 0
+    digit_count = 0
 
-    # Validation: price must be a positive number
-    try:
-        price_value = float(price_raw)
-    except ValueError:
-        print("Error: invalid input")
-        return
+    for character in price_text:
+        if character.isdigit():
+            digit_count = digit_count + 1
+        elif character == ".":
+            decimal_point_count = decimal_point_count + 1
+        else:
+            price_format_is_valid = False
 
-    if price_value <= 0:
-        print("Error: invalid input")
-        return
+    if decimal_point_count > 1 or digit_count == 0:
+        price_format_is_valid = False
 
-    # Format price with two decimals
-    price_text = f"{price_value:.2f}"
+    if price_format_is_valid:
+        try:
+            price_number = float(price_text)
+        except ValueError:
+            price_format_is_valid = False
 
-    # Build base label
-    base_label = f"Product: {product_name} | Price: ${price_text}"
-
-    # Pad with spaces or truncate to exactly 30 characters
-    if len(base_label) < 30:
-        label = base_label + " " * (30 - len(base_label))
+    if not price_format_is_valid:
+        print("Error: price must be a positive number")
+    elif price_number <= 0:
+        print("Error: price must be greater than zero")
     else:
-        label = base_label[:30]
+        label = f"Product: {product_name} | Price: ${price_text}"
 
-    print(f'Label: "{label}"')
+        if len(label) > 30:
+            label = label[:30]
+        elif len(label) < 30:
+            label = label + (" " * (30 - len(label)))
 
-
-# =============================================================================
-# MAIN
-# =============================================================================
-def main():
-    problem_1_full_name_formatter()
-    problem_2_email_validator()
-    problem_3_palindrome_checker()
-    problem_4_sentence_word_stats()
-    problem_5_password_strength()
-    problem_6_product_label()
+        print(f'Label: "{label}"')
+        print(f"Label length: {len(label)}")
 
 
-if __name__ == "__main__":
-    main()
+# ============================================================
+# CONCLUSIONS
+# - Strings are essential for reading, processing, and displaying data.
+# - lower() helps compare text without case differences.
+# - strip() removes surrounding whitespace, while split() separates
+#   text into words and join() combines words into one string.
+# - Normalizing input before comparing it makes results more reliable.
+# - Clear validations prevent empty or incorrectly formatted data
+#   from being processed as valid input.
+# - Strings are immutable, so methods such as replace() return new text.
+# - Slicing is useful for extracting parts of text or limiting its size.
+# - Testing normal, border, and error cases helps reveal mistakes.
 
-
-# =============================================================================
-# CONCLUSIONES
-# =============================================================================
-# String handling is essential in nearly every program because almost all
-# input and output flows through text. Methods such as lower() and strip()
-# should be used before comparing data, while split() and join() help to
-# manipulate words efficiently without manual loops. Normalizing text
-# guarantees consistent comparisons and avoids false negatives. Designing
-# validations step by step (non-empty, format, semantic rules) prevents
-# garbage data and runtime errors. Working through these problems made it
-# clear that strings are immutable: each operation returns a new object,
-# and slicing (including text[::-1]) is a powerful and safe way to extract
-# or reverse content.
-#
-# =============================================================================
 # REFERENCES
-# =============================================================================
-# 1) Python documentation - Built-in Types: Text Sequence Type — str
+# 1) Python Software Foundation. Built-in Types: Text Sequence Type — str.
 #    https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str
-# 2) Python documentation - String Methods
-#    https://docs.python.org/3/library/stdtypes.html#string-methods
-# 3) W3Schools - Python Strings Tutorial
-#    https://www.w3schools.com/python/python_strings.asp
-# 4) Real Python - Python String Formatting Best Practices
-#    https://realpython.com/python-string-formatting/
-# 5) Lutz, M. (2013). Learning Python (5th ed.). O'Reilly Media.
-# 6) Downey, A. (2015). Think Python: How to Think Like a Computer Scientist.
-# =============================================================================
+# 2) Python Software Foundation. Built-in Functions.
+#    https://docs.python.org/3/library/functions.html
+# 3) Python Software Foundation. An Informal Introduction to Python.
+#    https://docs.python.org/3/tutorial/introduction.html
+# 4) Python Software Foundation. More on Strings.
+#    https://docs.python.org/3/tutorial/introduction.html#strings
+# 5) Python Software Foundation. Errors and Exceptions.
+#    https://docs.python.org/3/tutorial/errors.html
+# 6) Python Software Foundation. Input and Output.
+#    https://docs.python.org/3/tutorial/inputoutput.html
