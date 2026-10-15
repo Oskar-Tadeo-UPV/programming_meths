@@ -6,31 +6,18 @@
 # ============================================================
 
 # EXECUTIVE SUMMARY
-#   A string is a Python data type used to store text, such as names,
-#   sentences, email addresses, passwords, and product labels.
-#   Strings are immutable, which means that their characters cannot be
-#   changed directly; string operations create new strings instead.
-#   Common operations include joining text, measuring its length,
-#   extracting slices, searching for text, and replacing characters.
-#   Input validation helps prevent empty, incorrectly formatted, or
-#   unexpected data from being processed as if it were valid.
-#   Normalization, such as removing extra spaces and using lowercase,
-#   makes text comparisons more consistent and reliable.
-#   This file contains six problems with descriptions, inputs, outputs,
-#   validations, example test cases, and Python code for each solution.
-
-# PRINCIPLES AND GOOD PRACTICES
-#   - Strings are immutable: operations create a new string.
-#   - Use strip() and lower() to normalize text before comparisons.
-#   - Explain slice indexes instead of using unexplained numbers.
-#   - Prefer built-in string methods over unnecessarily complex logic.
-#   - Validate in a clear order: check for empty input, then its format.
-#   - Use readable variable names and understandable error messages.
-#   - The examples use introductory concepts such as input(), print(),
-#     if/elif/else, for loops, lists, indexing, slicing, and f-strings.
-#   - Some string methods are included because they are required by this
-#     assignment: strip(), split(), replace(), count(), find(), and others.
-
+#   Una cadena (string) es un tipo de dato en Python que se utiliza para almacenar texto, como nombres,
+#   oraciones, direcciones de correo electrónico, contraseñas y etiquetas de productos.
+#   Las cadenas son inmutables, lo que significa que sus caracteres no pueden
+#   modificarse directamente; en su lugar, las operaciones con cadenas crean nuevas cadenas.
+#   Las operaciones comunes incluyen concatenar texto, medir su longitud,
+#   extraer fragmentos, buscar texto y reemplazar caracteres.
+#   La validación de entradas ayuda a evitar que datos vacíos, con formato incorrecto o
+#   inesperados sean procesados ​​como si fueran válidos.
+#   La normalización —como eliminar espacios adicionales o convertir el texto a minúsculas—
+#   hace que las comparaciones de texto sean más coherentes y fiables.
+#   Este archivo contiene seis problemas que incluyen descripciones, entradas, salidas,
+#   validaciones, ejemplos de casos de prueba y el código en Python para cada solución.
 
 # ============================================================
 # PROBLEM 1: FULL NAME FORMATTER
